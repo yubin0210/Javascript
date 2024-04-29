@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>23_filter</title>
+    <style>
+        #root {
+            width: 900px;
+            margin: auto;
+            display: flex;
+        }
+        .left {
+            width: 150px;
+            display: flex;
+            flex-direction: column;
+        }
+        .right {
+            overflow-y: auto;
+            overflow-x: hidden;
+            height: 80vh;   /* viewHeight : 보여지는 높이 (브라우저 창 기준) */
+        }
+        .item {
+            display: flex;
+            width: 100%;
+        }
+        .item > div {
+            border: 1px solid black;
+            flex: 1;
+            padding: 5px 10px;
+        }
+        .item > div:nth-child(1) {
+            flex: 4;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    
+    <h1>과일 상품 가격대별 필터 <span></span></h1>
+    <hr>
+    <div id="root">
+        <div class="left">
+            <label><input type="checkbox" name="p0">10000원 미만</label>
+            <label><input type="checkbox" name="p1">10000원 ~</label>
+            <label><input type="checkbox" name="p2">20000원 ~</label>
+            <label><input type="checkbox" name="p3">30000원 ~</label>
+            <label><input type="checkbox" name="p4">40000원 ~</label>
+            <label><input type="checkbox" name="p5">50000원 ~</label>
+        </div>
+        <div class="right"></div>
+    </div>
+    
+    <script src="homeplus(berry).js"></script>
+    <script>
+        const root = document.querySelector('div.right')
+        function load() {
+            arr.sort((e1, e2) => e1.price - e2.price)
+            arr.forEach(dto => {
+                let tag = ''
+                tag += `<div class="item">`
+                tag += `    <div class="name">${dto.name}</div>`
+                tag += `    <div class="price">${dto.price }</div>`
+                tag += `    <div class="grade">${dto.grade}</div>`
+                tag += `</div>`
+                root.innerHTML += tag
+            })
+        }
+        window.onload = load
+    </script>
+
+    <script>
+        function filterHandler(event) {
+            const checkArray = Array.from(document.querySelectorAll('input[type="checkbox"]'))
+                                    .filter(e => e.checked)
+                                    .map(e => +e.name.substr(1))
+            console.log(checkArray)
+            const itemList = document.querySelectorAll('div.item')
+
+            if(checkArray.length == 0) {
+                itemList.forEach(item => item.classList.remove('hidden'))
+                document.querySelector('h1 > span').innerText = ''
+                return
+            }
+
+            // itemList.forEach(item => {
+            //     const price = Math.floor(+item.children[1].innerText / 10000)
+            //     if(checkArray.includes(price)) 
+            //         item.classList.remove('hidden')
+            //     else 
+            //         item.classList.add('hidden')
+            // })
+
+            // 반복도 수행하면서 개수도 체크하기
+            const size = Array.from(itemList).filter(item => {
+                const price = Math.floor(+item.children[1].innerText / 10000)
+                if(checkArray.includes(price)) {
+                    item.classList.remove('hidden')
+                    return true
+                }
+                else {
+                    item.classList.add('hidden')
+                    return false
+                }
+            }).length
+            document.querySelector('h1 > span').innerText = '(개수 : ' + size + ')'
+        }
+        document.querySelectorAll('input[type="checkbox"]').forEach(e => e.onclick = filterHandler)
+    </script>
+
+</body>
+</html>

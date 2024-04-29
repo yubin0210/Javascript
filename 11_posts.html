@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>11_posts.html</title>
+    <style>
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        a:hover {
+            cursor: pointer;
+            color: red;
+            text-decoration: underline;
+        }
+        table {
+            border-collapse: collapse;
+            margin: auto;
+        }
+        thead {
+            background-color: grey;
+            color: white;
+        }
+        tr {
+            border-bottom: 1px solid grey;
+        }
+        th, td {
+            padding: 5px 10px;
+        }
+        
+    </style>
+</head>
+<body>
+
+    <h1>11_posts.html</h1>
+    <hr>
+
+    <div id="root">
+        <table>
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>제목</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <script>
+
+        const url = 'https://jsonplaceholder.typicode.com/posts'
+
+        fetch(url)
+            .then(resp => resp.json())
+            .then(json => {
+                // console.log(json)
+                const tbody = document.querySelector('#root > table > tbody')
+                const arr = json.toSorted((a, b) => b.id - a.id)    // 정수 반환
+                                   // .slice(0, 20)   // 페이징 역할을 할 수 있다
+
+                arr.forEach(dto => {
+                    let tag = ''
+                    tag += `<tr>`
+                    tag += `    <td>${dto.id}</td>`
+                    tag += `    <td><a href="12_post.html?id=${dto.id}">${dto.title}</a></td>`
+                    tag += `</tr>`
+                    tbody.innerHTML += tag    
+                })
+            })  // end of fetch
+
+
+            // GET  : select
+            // POST : insert
+            // PUT/PATCH : update
+            // DELETE    : delete
+
+    </script>
+    
+</body>
+</html>

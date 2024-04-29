@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #root {
+            border: 2px solid black;
+            max-width: 1200px;
+            margin: auto;
+        }
+        .item {
+            display: flex;
+            border-bottom: 1px solid grey;
+        }
+        .item > div {
+            padding: 10px 20px;
+            flex: 2;
+        }
+        .item > div:first-child {
+            flex: 4;
+        }
+        .item > div:nth-child(2) {
+            flex: 3;
+        }
+        .columns {
+            background-color: #eee;
+            cursor: pointer;
+            user-select: none; 
+        }
+    </style>
+</head>
+<body>
+    <div id="root">
+        <div class="columns item">
+            <div order="1" class="guNm">
+                <span class="text">지역</span>
+                <span class="arrow"></span>
+            </div>
+            <div order="1" class="pkNam">
+                <span class="text">이름</span>
+                <span class="arrow"></span>
+            </div>
+            <div order="1" class="pkFm">
+                <span class="text">노상/노외</span>
+                <span class="arrow"></span>
+            </div>
+            <div order="1" class="pkCnt">
+                <span class="text">주차가능 대수</span>
+                <span class="arrow"></span>
+            </div>
+            <div order="1" class="tenMin">
+                <span class="text">10분 요금</span>
+                <span class="arrow"></span>
+            </div>
+            <div order="1" class="ftDay">
+                <span class="text">하루 요금</span>
+                <span class="arrow"></span>
+            </div>
+            <div order="1" class="ftMon">
+                <span class="text">한달 요금</span>
+                <span class="arrow"></span>
+            </div>
+            <div order="1" class="currava">
+                <span class="text">currava</span>
+                <span class="arrow"></span>
+            </div>
+        </div>
+        <div class="main"></div>
+    </div>
+
+    
+    
+    <script src="parking.js"></script>
+    <script>
+        console.log(arr)
+        function load() {
+            const main = document.querySelector('div.main')
+            arr.forEach(e => {
+                let tag = ''
+                tag += `<div class="item">`
+                tag += `    <div class="guNm">${e.guNm}</div>`
+                tag += `    <div class="pkNam">${e.pkNam}</div>`
+                tag += `    <div class="pkCnt">${e.pkCnt}</div>`
+                tag += `    <div class="tenMin">${e.tenMin}</div>`
+                tag += `    <div class="ftDay">${e.ftDay}</div>`
+                tag += `    <div class="ftMon">${e.ftMon}</div>`
+                tag += `    <div class="currava">${e.currava}</div>`
+                tag += `</div>`
+                main.innerHTML += tag
+            })
+        }
+        window.addEventListener('DOMContentLoaded', load)
+
+        const columns = document.querySelectorAll('.columns > div')
+        const sort = Array.from(columns).slice(3, 7)
+        const main = document.querySelector('.main')
+
+        
+
+        function sortHandler(event) {
+            let target = event.target
+            while(target.tagName != 'DIV') {
+                target = target.parentNode
+            }
+            const className = target.className
+            const order = +target.getAttribute('order')
+            target.setAttribute('order', -order)
+
+            document.querySelectorAll('span.arrow').forEach(span => span.innerText = '')
+
+            target.querySelector('span.arrow').innerText = order > 0 ? '▲' : '▼'
+
+            const arr2 = Array.from(document.querySelectorAll('.main > .item'))
+            arr2.sort((e1, e2) => {
+                const v1 = +e1.querySelector('.' + className).innerText
+                const v2 = +e2.querySelector('.' + className).innerText
+                const ret = v1 - v2 >= 0 ? 1 : -1
+                return ret * order
+            })
+            arr2.forEach(e => main.appendChild(e))
+        }
+        sort.forEach(e => e.onclick = sortHandler)
+        
+    </script>
+</body>
+</html>

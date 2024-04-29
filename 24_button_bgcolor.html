@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>24_button_bgcolor.html</title>
+    <style>
+        div.box {
+            width: 300px;
+            height: 200px;
+            border: 2px solid black;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>24_button_bgcolor.html</h1>
+    <hr>
+    <div id="root">
+        <div class="btns">
+            <button id="red">빨강</button>
+            <button id="orange">주황</button>
+            <button id="green">초록</button>
+            <button id="blue">파랑</button>
+            <button id="purple">보라</button>
+        </div>
+        <div class="box"></div>
+    </div>
+
+    <script>
+        const btns = document.querySelectorAll('.btns > button')
+
+        // function clickHandler(event) { ... }
+        const clickHandler = function(event) {
+            const id = event.target.id
+            console.log(id)
+
+            const box = document.querySelector('div.box')
+            // box.style.background-color (X)
+            // box.style.backgroundColor = '#00b2cf'
+            // box.style.backgroundColor = 'rgb(255, 128, 0)'
+            box.style.backgroundColor = id
+            box.style.opacity = 0.5
+        }
+        // for(let i = 0; i < btns.length; i++) {
+        //     btns[i].onclick = clickHandler
+        // }
+        btns.forEach(btn => btn.onclick = clickHandler)
+
+    </script>
+    
+</body>
+</html>

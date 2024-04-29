@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>27_modal_aside.html</title>
+    <style>
+        aside {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 300px;
+            height: 100%;
+            background-color: white;
+            box-shadow: 10px 10px 10px black;
+            z-index: 3;
+            transition-duration: 0.5s;
+        }
+        div.overlay {
+            z-index: 2;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        aside.hidden {
+            left: -350px;
+        }
+        div.overlay.hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>27_modal_aside.html</h1>
+    <hr>
+    <h3>버튼을 클릭하면 왼쪽에 숨겨져있던 메뉴 창이 움직이면서 나타난다</h3>
+
+    <button>열기</button>
+
+    <aside class="hidden">
+        <h3>메뉴</h3>
+        <ul>
+            <li>콜드브루 돌체라떼</li>
+            <li>헤이즐넛 아메리카노</li>
+            <li>바닐라빈 라떼</li>
+            <li>허니레몬티</li>
+            <li>로얄밀크티</li>
+        </ul>
+        <button>닫기</button>
+    </aside>
+    <div class="overlay hidden"></div>
+
+    <script>
+        document.querySelectorAll('button').forEach(btn => btn.onclick = e => {
+            document.querySelector('aside').classList.toggle('hidden')
+            document.querySelector('div.overlay').classList.toggle('hidden')
+        })
+    </script>
+
+</body>
+</html>
